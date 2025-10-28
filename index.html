@@ -61,6 +61,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-decoration: none;
         }
 
         .nav-links {
@@ -93,6 +94,47 @@
         .cta-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem 5%;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 999;
+        }
+
+        .mobile-nav.active {
+            display: block;
+        }
+
+        .mobile-nav a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: color 0.3s;
+        }
+
+        .mobile-nav a:hover {
+            color: var(--accent-blue);
         }
 
         /* Hero Section */
@@ -291,15 +333,8 @@
             box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
         }
 
-        .product-btn.disabled {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            cursor: not-allowed;
-        }
-
-        .product-btn.disabled:hover {
-            transform: none;
-            box-shadow: none;
+        .product-btn.waitlist {
+            background: var(--gradient-1);
         }
 
         /* Stats Section */
@@ -360,37 +395,52 @@
             text-align: center;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .footer-links a {
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-section a {
             color: var(--text-secondary);
             text-decoration: none;
             transition: color 0.3s;
         }
 
-        .footer-links a:hover {
+        .footer-section a:hover {
             color: var(--accent-blue);
         }
 
-        footer p {
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
             color: var(--text-secondary);
             font-size: 0.95rem;
         }
 
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
+        .footer-bottom p {
+            margin-bottom: 0.5rem;
         }
 
         /* Responsive Design */
@@ -407,7 +457,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .nav-links {
+            .nav-links, .nav-container .cta-button {
                 display: none;
             }
 
@@ -422,6 +472,11 @@
             .cta-section h2 {
                 font-size: 2rem;
             }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -429,24 +484,31 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">NeuverraX</div>
+            <a href="https://neuverrax.ai" class="logo">NeuverraX</a>
             <ul class="nav-links">
                 <li><a href="#products">Products</a></li>
-                <li><a href="https://docs.neuverrax.ai">Docs</a></li>
-                <li><a href="https://neuverrax.com/blog">Blog</a></li>
                 <li><a href="https://neuverrax.com">Company</a></li>
+                <li><a href="mailto:info@neuverrax.com">Contact</a></li>
             </ul>
-            <a href="#contact" class="cta-button">Get Started</a>
-            <button class="mobile-menu-btn">☰</button>
+            <a href="https://research.neuverrax.com" class="cta-button">Try Research Copilot</a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
     </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#products">Products</a>
+        <a href="https://neuverrax.com">Company</a>
+        <a href="https://research.neuverrax.com">Try Research Copilot</a>
+        <a href="mailto:info@neuverrax.com">Contact</a>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
         <h1>AI-Powered Tools for<br>Research & Learning</h1>
         <p>Transform how you discover knowledge and master skills with intelligent systems that adapt, learn, and evolve with you.</p>
         <div class="hero-buttons">
-            <a href="https://research.neuverrax.ai" class="primary-btn">Try Research Copilot →</a>
+            <a href="https://research.neuverrax.com" class="primary-btn">Try Research Copilot →</a>
             <a href="#products" class="secondary-btn">Explore Products</a>
         </div>
     </section>
@@ -491,7 +553,7 @@
                     <li>Citation management & export</li>
                     <li>Collaborative research workspace</li>
                 </ul>
-                <a href="https://research.neuverrax.ai" class="product-btn">Launch Research Copilot →</a>
+                <a href="https://research.neuverrax.com" class="product-btn">Launch Research Copilot →</a>
             </div>
 
             <!-- Abacus Sensei -->
@@ -506,7 +568,7 @@
                     <li>Gamified learning experience</li>
                     <li>Teacher dashboard & insights</li>
                 </ul>
-                <a href="#contact" class="product-btn">Join Waitlist →</a>
+                <a href="mailto:info@neuverrax.com?subject=Abacus Sensei Waitlist" class="product-btn waitlist">Join Waitlist →</a>
             </div>
         </div>
     </section>
@@ -516,36 +578,83 @@
         <h2>Ready to Transform Your Workflow?</h2>
         <p>Join researchers and educators who are accelerating discovery and personalizing learning with NeuverraX AI.</p>
         <div class="hero-buttons">
-            <a href="https://research.neuverrax.ai" class="primary-btn">Start Free Trial</a>
-            <a href="https://neuverrax.com/contact" class="secondary-btn">Contact Sales</a>
+            <a href="https://research.neuverrax.com" class="primary-btn">Start Using Research Copilot</a>
+            <a href="mailto:info@neuverrax.com?subject=NeuverraX Inquiry" class="secondary-btn">Contact Us</a>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-links">
-            <a href="https://neuverrax.com">Company</a>
-            <a href="https://neuverrax.com/about">About</a>
-            <a href="https://neuverrax.com/blog">Blog</a>
-            <a href="https://docs.neuverrax.ai">Documentation</a>
-            <a href="https://neuverrax.com/careers">Careers</a>
-            <a href="https://neuverrax.com/contact">Contact</a>
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="https://research.neuverrax.com">Research Copilot</a></li>
+                        <li><a href="mailto:info@neuverrax.com?subject=Abacus Sensei Waitlist">Abacus Sensei (Coming Soon)</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="https://neuverrax.com">About NeuverraX</a></li>
+                        <li><a href="https://neuverrax.com#expertise">Our Expertise</a></li>
+                        <li><a href="https://neuverrax.com#services">Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://github.com/neuverrax">GitHub</a></li>
+                        <li><a href="mailto:info@neuverrax.com?subject=Documentation Request">Documentation</a></li>
+                        <li><a href="mailto:info@neuverrax.com?subject=Support Request">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="mailto:info@neuverrax.com">Email Us</a></li>
+                        <li><a href="https://neuverrax.com">Corporate Site</a></li>
+                        <li><a href="https://neuverrax.ai">Product Ecosystem</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 NeuverraX Private Limited. All rights reserved.</p>
+                <p style="margin-top: 1rem; font-size: 0.85rem;">
+                    <a href="https://neuverrax.com" style="color: var(--text-secondary); text-decoration: none;">Corporate Site</a> | 
+                    <a href="https://neuverrax.ai" style="color: var(--accent-blue); text-decoration: none;">Product Ecosystem</a>
+                </p>
+            </div>
         </div>
-        <p>© 2025 NeuverraX. All rights reserved.</p>
-        <p style="margin-top: 1rem; font-size: 0.85rem;">
-            <a href="https://neuverrax.com" style="color: var(--text-secondary);">Corporate Site</a> | 
-            <a href="https://neuverrax.ai" style="color: var(--accent-blue);">Product Ecosystem</a>
-        </p>
     </footer>
 
     <script>
-        // Smooth scroll for navigation links
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileNav = document.getElementById('mobileNav');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (!mobileNav.contains(event.target) && !menuBtn.contains(event.target)) {
+                mobileNav.classList.remove('active');
+            }
+        });
+
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu if open
+                    document.getElementById('mobileNav').classList.remove('active');
                 }
             });
         });
@@ -558,11 +667,36 @@
             
             if (currentScroll > 100) {
                 nav.style.background = 'rgba(10, 14, 39, 0.98)';
+                nav.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.3)';
             } else {
                 nav.style.background = 'rgba(10, 14, 39, 0.95)';
+                nav.style.boxShadow = 'none';
             }
             
             lastScroll = currentScroll;
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe product cards
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
         });
     </script>
 </body>
